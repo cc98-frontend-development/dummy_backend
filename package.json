@@ -1,0 +1,14 @@
+{
+    "name": "dummy_backend",
+    "version": "0.1.0",
+    "dependencies": {
+        "express": "4.4.x",
+        "serializer": "0.0.x",
+        "body-parser": "1.4.x",
+        "when": "3.2.x"
+    },
+    "main": "index",
+    "engines": {
+        "node": "0.10.x"
+    }
+}
