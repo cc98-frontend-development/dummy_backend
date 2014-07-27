@@ -4,8 +4,7 @@
     "dependencies": {
         "express": "4.4.x",
         "serializer": "0.0.x",
-        "body-parser": "1.4.x",
-        "when": "3.2.x"
+        "body-parser": "1.4.x"
     },
     "main": "index",
     "engines": {
