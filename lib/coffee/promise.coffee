@@ -52,6 +52,7 @@ class Promise extends EventEmitter
 
     nand: (b)->
     # will wait for both a and b to be RESOLVED or REJECTED
+    # NAND has functional completeness to express all logical function
     # Promise(a) Promise(b) a.nand(b)
     # REJECTED   REJECTED   RESOLVED(a)
     # REJECTED   RESOLVED   RESOLVED(a)
@@ -59,11 +60,12 @@ class Promise extends EventEmitter
     # RESOLVED   RESOLVED   REJECTED(b)
 
     # a.not() = a.nand(a)
+    # a.id() = a.not().not()
     # a.and(b) = a.nand(b).not()
     # a.or(b) = a.not().nand(b.not())
     # a.nor(b) = a.or(b).not()
     # a.xor(b) = a.nand(a.nand(b)).nand(b.nand(a.nand(b)))
-    # a.xnor(b) = a.nand(a.nand(b)).nand(b.nand(a.nand(b))).not()
+    # a.xnor(b) = a.xor(b).not()
         a = this
         n = new Promise()
         if a.status is REJECTED
@@ -129,6 +131,10 @@ class Promise extends EventEmitter
     not: ()->
         return @nand(this)
 
+    id: ()->
+    # id return a copy of RESOLVED or REJECTED Promise(a) with its value
+        return @not().not()
+
     and: (b)->
         return @nand(b).not()
 
@@ -170,10 +176,14 @@ test = () ->
     b.reject("b")
     c = new Promise()
     d = new Promise()
+    e = c.id()
 
     console.log "a is resolved"
     console.log "b is rejected"
     console.log "c d is pending"
+    console.log "e = c.id()", e
+    console.log "e is c", e is c
+
     console.log "a or b ", a.or b
     console.log "a or c ", a.or c
     console.log "a or d ", a.or d
@@ -199,6 +209,8 @@ test = () ->
     d.reject("d")
     console.log "c is resolved"
     console.log "d is rejected"
+    console.log "e = c.id()", e
+    console.log "e is c", e is c
     console.log "a or b ", a.or b
     console.log "a or c ", a.or c
     console.log "a or d ", a.or d
@@ -222,5 +234,3 @@ test = () ->
 
 exports.Promise = Promise
 exports.test = test
-
-test()
